@@ -12,10 +12,9 @@ Window {
     height: 480
     title: qsTr("E-Arşiv - 2018 Serik Belediyesi")
 
+    property QMLBSON user: QBSON.newBSON()
 
-    MongoDB{
-        id: db
-    }
+
 
 
     Rectangle{
@@ -32,6 +31,7 @@ Window {
             color: "transparent"
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
+            z: 10
 
             Rectangle{
                 id: userohoto
@@ -41,7 +41,6 @@ Window {
                 anchors.left: parent.left
                 Image {
                     id: userimg
-                    source: "file"
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                 }
@@ -51,10 +50,13 @@ Window {
                 anchors.left: userohoto.right
                 anchors.right: parent.right
                 anchors.top: parent.top
-                height: 50
+                height: 75
                 color: "DarkSlateGray"
                 Column{
                     anchors.fill: parent
+                    spacing: 10
+                    anchors.leftMargin: 10
+                    anchors.topMargin: 10
                     Text {
                         id: adsoyad
                         text: qsTr("")
@@ -99,15 +101,23 @@ Window {
             width: parent.width
             anchors.top: header.bottom
             anchors.bottom: parent.bottom
+            anchors.topMargin: -45
             color: "transparent"
 
             LoginScreen{
-                id: user
+                id: userid
                 onLoginSucces: {
                     visible = false;
-                    userimg.source = db.fileurl(user.kullanici.getElement("fotooid").Oid);
-                    adsoyad.text = user.kullanici.getElement("ad soyad").String
-                    birim.text = user.kullanici.getElement("Birimi").String
+                    userimg.source = db.fileurl(user.getElement("fotooid").Oid);
+                    adsoyad.text = user.getElement("ad soyad").String
+                    birim.text = user.getElement("Birimi").String
+
+                    var comp = Qt.createComponent("qrc:/Arsiv.qml");
+
+                    if( comp.status === Component.Ready )
+                    {
+                        var e = comp.createObject(mainrect);
+                    }
                 }
             }
         }

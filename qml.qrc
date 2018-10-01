@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>LoginScreen.qml</file>
+        <file>Arsiv.qml</file>
+        <file>Ayarlar.qml</file>
     </qresource>
 </RCC>
