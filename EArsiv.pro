@@ -27,3 +27,13 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDBd
+else:unix: LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
+
+INCLUDEPATH += $$PWD/mingw32-windows-release-v0.7/include
+DEPENDPATH += $$PWD/mingw32-windows-release-v0.7/include
