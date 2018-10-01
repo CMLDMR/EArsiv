@@ -1,15 +1,34 @@
 import QtQuick 2.9
+import QtGraphicalEffects 1.0
+
+import com.mongodb 0.7
 
 Item {
 
     anchors.fill: parent
+    id: item
+
+    property QMLBSON kullanici
+
+    signal loginSucces();
 
     Rectangle{
         anchors.fill: parent
         color: "#88000000"
 
+        DropShadow {
+            anchors.fill: inputrectangle
+            horizontalOffset: 0
+            verticalOffset: 0
+            radius: 8.0
+            samples: 17
+            color: "#80000000"
+            source: inputrectangle
+        }
+
 
         Rectangle{
+            id: inputrectangle
             width: parent.width > 400 ? 400 : parent.width
             height: parent.height > 200 ? 200 : parent.height
             color: "#88000000"
@@ -48,7 +67,6 @@ Item {
                         font.pointSize: 12
                         font.family: "Tahoma"
                         color: "white"
-//                        validator: IntValidator{bottom:500000000; top:5999999999}
                         Text {
                             text: qsTr("Telefon Numarasını Giriniz ( 05321234567 )");
                             font.bold: true
@@ -78,6 +96,7 @@ Item {
                         font.pointSize: 12
                         font.family: "Tahoma"
                         color: "white"
+                        echoMode: TextInput.PasswordEchoOnEdit
                         Text {
                             text: qsTr("Şifrenizi Giriniz");
                             font.bold: true
@@ -103,6 +122,23 @@ Item {
                         font.family: "Tahoma"
                         font.pointSize: 11
                         anchors.centerIn: parent
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            var filter = QBSON.newBSON();
+
+                            QBSON.insertString(filter,"telefon",telnoinput.text);
+                            QBSON.insertString(filter,"password",sifreinput.text);
+
+                            item.kullanici = db.find_one("Personel",filter,QBSON.newBSON());
+
+                            if( item.kullanici.getElement("telefon").String === telnoinput.text && item.kullanici.getElement("telefon").String.length )
+                            {
+                                item.kullanici.print();
+                                loginSucces();
+                            }
+                        }
                     }
                 }
             }
