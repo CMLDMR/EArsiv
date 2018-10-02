@@ -8,5 +8,6 @@
         <file>Uyari.qml</file>
         <file>GlobalFunction.js</file>
         <file>YeniTip.qml</file>
+        <file>Arama.qml</file>
     </qresource>
 </RCC>
