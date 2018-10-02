@@ -18,14 +18,12 @@ int main(int argc, char *argv[])
 
     QMLMongoDB::instance(url,dbname);
 
-
-
     QQmlApplicationEngine engine;
-
 
     engine.rootContext()->setContextProperty("db",new QMLMongoDB());
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
     if (engine.rootObjects().isEmpty())
         return -1;
 

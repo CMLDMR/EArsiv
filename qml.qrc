@@ -4,5 +4,7 @@
         <file>LoginScreen.qml</file>
         <file>Arsiv.qml</file>
         <file>Ayarlar.qml</file>
+        <file>YeniKategori.qml</file>
+        <file>Uyari.qml</file>
     </qresource>
 </RCC>
