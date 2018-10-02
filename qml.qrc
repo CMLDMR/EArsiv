@@ -6,5 +6,7 @@
         <file>Ayarlar.qml</file>
         <file>YeniKategori.qml</file>
         <file>Uyari.qml</file>
+        <file>GlobalFunction.js</file>
+        <file>YeniTip.qml</file>
     </qresource>
 </RCC>

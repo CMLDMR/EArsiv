@@ -60,6 +60,8 @@ Item {
                                             var filter = QBSON.newBSON();
                                             QBSON.insertOid(filter,"kategorioid",modelData.getElement("_id").Oid);
                                             repeaterTip.model = db.find("ArsivTip",filter,QBSON.newBSON());
+                                            tipRect.currentKategoriOid = modelData.getElement("_id").Oid;
+                                            tipTitle.text = "\"" + modelData.getElement("kategoriAdi").String +  "\" Arşiv Tipleri"
                                         }
                                     }
                                 }
@@ -83,7 +85,6 @@ Item {
                                             var filter = QBSON.newBSON();
 
                                             QBSON.insertOid(filter,"kategorioid",modelData.getElement("_id").Oid);
-
 
                                             var count = db.count("ArsivTip",filter);
 
@@ -180,6 +181,7 @@ Item {
                     id: tipRect
                     width: item.width/2
                     height: item.height
+                    property string currentKategoriOid: ""
                     Column{
                         spacing: 2
                         anchors.fill: parent
@@ -187,6 +189,7 @@ Item {
                             width: tipRect.width
                             height: 50
                             Text {
+                                id: tipTitle
                                 text: qsTr("Arşiv Tipi")
                                 anchors.centerIn: parent
                                 font.bold: true
@@ -200,11 +203,59 @@ Item {
                             Rectangle{
                                 width: tipRect.width
                                 height: 30
-                                Text {
-                                    text: modelData.getElement("adi").String
-                                    anchors.centerIn: parent
-                                    color: "black"
+                                Row{
+                                    anchors.fill: parent
+                                    Rectangle{
+                                        width: parent.width - 30
+                                        height: 30
+                                        Text {
+                                            text: modelData.getElement("adi").String
+                                            anchors.centerIn: parent
+                                            color: "black"
+                                        }
+                                    }
+                                    Rectangle{
+                                        width: 30
+                                        height: 30
+                                        color: "DarkSlateGray"
+                                        Text {
+                                            text: "Sil"
+                                            anchors.centerIn: parent
+                                            color: "white"
+                                            font.bold: true
+                                            font.pointSize: 10
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        MouseArea{
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                print( "Sil" );
+                                                var filter = QBSON.newBSON();
+                                                QBSON.insertOid(filter,"tipoid",modelData.getElement("_id").Oid);
+
+                                                var count = db.count("Arsiv",filter);
+
+                                                if( count !== 0 )
+                                                {
+                                                    Global.uyari("Bu Arşiv Tipi " + count + " Adet Arşivlenmiş Dosyaya Bağlı");
+                                                }else{
+                                                    filter.removeAll();
+                                                    filter.addOid("_id",modelData.getElement("_id").Oid);
+                                                    if( db.delete_one("ArsivTip",filter) )
+                                                    {
+                                                        Global.uyari("Arşiv Tipi Silindi");
+                                                        filter.removeAll();
+                                                        QBSON.insertOid(filter,"kategorioid",tipRect.currentKategoriOid);
+                                                        repeaterTip.model = db.find("ArsivTip",filter,QBSON.newBSON() );
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
+
+
                                 Rectangle{
                                     width: parent.width
                                     height: 1
@@ -216,7 +267,50 @@ Item {
                         Component.onCompleted: {
                             var filter = QBSON.newBSON();
                             QBSON.insertString(filter,"birim",user.getElement("Birimi").String);
-                            repeater.model = db.find("ArsivKategori",filter,QBSON.newBSON());
+                            repeaterTip.model = db.find("ArsivTip",filter,QBSON.newBSON());
+                        }
+
+                        Rectangle{
+                            width: parent.width
+                            height: 50
+                            color: "#666666"
+                            Text {
+                                text: qsTr("Yeni Tip Ekle")
+                                font.bold: true
+                                font.family: "Tahoma"
+                                font.pointSize: 10
+                                color: "white"
+                                anchors.centerIn: parent
+                            }
+                            MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    var component = Qt.createComponent("qrc:/YeniTip.qml");
+
+                                    if( component.status === Component.Ready )
+                                    {
+                                        var e = component.createObject(mainrect);
+
+                                        e.newTip.connect(function(newtip){
+                                            var obj = QBSON.newBSON();
+                                            QBSON.insertString(obj,"birim",user.getElement("Birimi").String);
+                                            QBSON.insertString(obj,"adi",newtip);
+                                            QBSON.insertOid(obj,"kategorioid",tipRect.currentKategoriOid);
+                                            if( db.insert_one("ArsivTip",obj) )
+                                            {
+                                                Global.uyari("Arşiv Tipi Eklendi");
+                                                var filter = QBSON.newBSON();
+                                                QBSON.insertOid(filter,"kategorioid",tipRect.currentKategoriOid);
+                                                repeaterTip.model = db.find("ArsivTip",filter,QBSON.newBSON());
+                                            }else{
+                                                Global.uyari("Arşiv Tipi Eklenemedi");
+                                            }
+
+                                            e.destroy();
+                                        });
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -67,6 +67,7 @@ Item {
                                 onReleased: {
                                     aramatext.color = "black";
                                     aramaYap.color = "white"
+                                    loadArama();
                                 }
                             }
                         }
@@ -101,6 +102,7 @@ Item {
                                 onReleased: {
                                     yeniekletext.color = "black";
                                     yuklemeYap.color = "white"
+                                    loadYeniEkle();
                                 }
                             }
                         }
@@ -143,19 +145,6 @@ Item {
 
 
 
-//                        DropShadow {
-//                            anchors.fill: ayarlar
-//                            horizontalOffset: 0
-//                            verticalOffset: 0
-//                            radius: 8.0
-//                            samples: 17
-//                            color: "#FF000000"
-//                            source: ayarlar
-//                        }
-
-
-
-
                     }
 
                 }
@@ -163,7 +152,7 @@ Item {
 
             Rectangle{
                 id: content
-                width: parent.width-200
+                width: parent.width-210
                 height: parent.height
                 color: "transparent"
             }
@@ -171,32 +160,44 @@ Item {
     }
 
 
+    function loadArama(){
+        for( var ii = 0 ; ii < content.children.length ; ii++ )
+        {
+            content.children[ii].destroy();
+        }
+    }
+
+    function loadYeniEkle(){
+
+        for( var ii = 0 ; ii < content.children.length ; ii++ )
+        {
+            content.children[ii].destroy();
+        }
+
+    }
+
+
     function loadAyarlar(){
 
-
-
-        if( currentSayfa !== 1 )
-        {
+//        if( currentSayfa !== 1 )
+//        {
             for( var ii = 0 ; ii < content.children.length ; ii++ )
             {
                 content.children[ii].destroy();
             }
-
 
             var component = Qt.createComponent("qrc:/Ayarlar.qml");
 
             if( component.status === Component.Ready )
             {
                 var e = component.createObject(content);
-
                 if( e !== null )
                 {
                     currentSayfa = 1;
                 }
             }
-        }
-
-
-
+//        }
     }
+
+
 }
