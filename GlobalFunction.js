@@ -10,5 +10,11 @@ function uyari(mesaj){
     {
         var e = component.createObject(mainrect,{"mesaj":mesaj});
     }
+}
 
+function responsive( totalwidth , width )
+{
+    var mod = totalwidth / width;
+    var ouput = width + ( mod - Math.floor(mod) ) * width / Math.floor(mod);
+    return ouput;
 }
