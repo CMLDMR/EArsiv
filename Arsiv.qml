@@ -165,6 +165,17 @@ Item {
         {
             content.children[ii].destroy();
         }
+
+        var component = Qt.createComponent("qrc:/Arama.qml");
+
+        if( component.status === Component.Ready )
+        {
+            var e = component.createObject(content);
+            if( e !== null )
+            {
+                currentSayfa = 1;
+            }
+        }
     }
 
     function loadYeniEkle(){
