@@ -3,6 +3,8 @@ import QtQuick 2.11
 
 import com.mongodb 0.7
 
+import "qrc:/GlobalFunction.js" as Global
+
 Item {
 
     anchors.fill: parent
@@ -87,14 +89,7 @@ Item {
 
                                             if( count !== 0 )
                                             {
-                                                print( "Bu Kategori Arşiv Tiplerinde Bağlı. Şuanda Silemezsiniz");
-
-                                                var component = Qt.createComponent("qrc:/Uyari.qml");
-
-                                                if( component.status === Component.Ready )
-                                                {
-                                                    var e = component.createObject(mainrect,{"mesaj":"Bu Kategoriye Bağlı Arşiv Tipleri Var. Önce Arşiv Tiplerini Siliniz"});
-                                                }
+                                                Global.uyari("Bu Kategoriye Bağlı Arşiv Tipleri Var. Önce Arşiv Tiplerini Siliniz");
 
                                             }else{
                                                 var filter = QBSON.newBSON();
