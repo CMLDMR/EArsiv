@@ -10,7 +10,7 @@ Item {
 
     anchors.fill: parent
 
-    property int limit: 25
+    property int limit: 28
     property int itemcount: 0
 
     Rectangle{
@@ -244,7 +244,7 @@ Item {
                                         MouseArea{
                                             anchors.fill: parent
                                             onClicked: {
-                                                print( itemcount/limit + " - " + pageid.currentIndex );
+//                                                print( itemcount/limit + " - " + pageid.currentIndex );
                                                 if( pageid.currentIndex < (itemcount/limit-1) )
                                                 {
                                                     pageid.currentIndex++;// This is available in all editors.
@@ -410,7 +410,7 @@ Item {
 
             for( ii = 0 ; ii < slist.length ; ii++ )
             {
-                print( ii + "* " + slist[ii]);
+//                print( ii + "* " + slist[ii]);
                 if( !slist[ii].includes("\"") )
                 {
                     cnlist[countCN] = slist[ii];
@@ -440,7 +440,7 @@ Item {
             filter.addInt("Sayı",sayi);
         }
 
-        print( "Sayı " + parseInt(sayiinput.text));
+//        print( "Sayı " + parseInt(sayiinput.text));
 
 
 
@@ -487,7 +487,7 @@ Item {
         option.addInt("skip",limit * pageid.currentIndex );
 
 
-        filter.print();
+//        filter.print();
 
         repeater.model = db.find("Arsiv",filter,option);
 

@@ -1,4 +1,4 @@
-QT += quick
+QT += quick core
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,9 +13,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    cpp/yeniarsivdosyamodel.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    resource.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -37,3 +39,6 @@ else:unix: LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
 
 INCLUDEPATH += $$PWD/mingw32-windows-release-v0.7/include
 DEPENDPATH += $$PWD/mingw32-windows-release-v0.7/include
+
+HEADERS += \
+    cpp/yeniarsivdosyamodel.h

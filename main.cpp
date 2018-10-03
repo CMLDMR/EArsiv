@@ -9,6 +9,7 @@
 
 #include "qmlmongodb.h"
 #include "../url.h"
+#include "cpp/yeniarsivdosyamodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +18,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QMLMongoDB::instance(url,dbname);
+
+    qmlRegisterType<YeniArsivDosyaModel>("com.eArsiv", 1, 0, "ArsivModel");
 
     QQmlApplicationEngine engine;
 

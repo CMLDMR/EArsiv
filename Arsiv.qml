@@ -185,6 +185,13 @@ Item {
             content.children[ii].destroy();
         }
 
+        var com = Qt.createComponent("qrc:/YeniArsiv.qml");
+
+        if( com.status === Component.Ready )
+        {
+            var e = com.createObject(content);
+        }
+
     }
 
 
