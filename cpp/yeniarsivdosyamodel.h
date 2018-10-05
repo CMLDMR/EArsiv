@@ -27,6 +27,10 @@ public:
 
     Q_INVOKABLE bool isPDF(const int& index);
 
+    Q_INVOKABLE qint64 getJulianDate(const int& year);
+
+    Q_INVOKABLE void clear();
+
 
 
 signals:

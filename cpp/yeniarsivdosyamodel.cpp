@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QUrl>
 #include <QImage>
+#include <QDate>
 
 #include <QDebug>
 
@@ -74,5 +75,19 @@ bool YeniArsivDosyaModel::isPDF(const int &index)
     }else{
         return false;
     }
+}
+
+qint64 YeniArsivDosyaModel::getJulianDate(const int &year)
+{
+    return QDate::fromString(QString::number(year),"yyyy").toJulianDay();
+}
+
+void YeniArsivDosyaModel::clear()
+{
+    while( this->mModel.count()  )
+    {
+        this->mModel.removeAt(0);
+    }
+    emit modelChanged();
 }
 
