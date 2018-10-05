@@ -9,34 +9,34 @@ import "qrc:/GlobalFunction.js" as Global
 Item {
 
     anchors.fill: parent
+    id: item
 
-    property int limit: 28
+    property int limit: 21
     property int itemcount: 0
 
-    Rectangle{
+    Rectangle {
         anchors.fill: parent
         color: "orange"
 
-
-        Rectangle{
+        Rectangle {
             id: searchCriteriaid
             width: parent.width
             height: 150
             color: "purple"
-            Column{
+            Column {
                 anchors.fill: parent
 
-                Rectangle{
+                Rectangle {
                     width: parent.width
                     height: 50
-                    Row{
+                    Row {
                         anchors.fill: parent
-                        Rectangle{
-                            width: parent.width/2
+                        Rectangle {
+                            width: parent.width / 2
                             height: 50
                             border.width: 1
                             border.color: "black"
-                            TextInput{
+                            TextInput {
                                 id: arsivadiinput
                                 width: parent.width
                                 height: parent.height
@@ -57,12 +57,12 @@ Item {
                                 }
                             }
                         }
-                        Rectangle{
-                            width: parent.width/2
+                        Rectangle {
+                            width: parent.width / 2
                             height: 50
                             border.width: 1
                             border.color: "black"
-                            TextInput{
+                            TextInput {
                                 id: anahtarkelimeinput
                                 width: parent.width
                                 height: parent.height
@@ -86,18 +86,17 @@ Item {
                     }
                 }
 
-
-                Rectangle{
+                Rectangle {
                     width: parent.width
                     height: 50
-                    Row{
+                    Row {
                         anchors.fill: parent
-                        Rectangle{
-                            width: parent.width/2
+                        Rectangle {
+                            width: parent.width / 2
                             height: 50
                             border.width: 1
                             border.color: "black"
-                            TextInput{
+                            TextInput {
                                 id: sayiinput
                                 width: parent.width
                                 height: parent.height
@@ -107,9 +106,9 @@ Item {
                                 font.bold: true
                                 font.family: "Tahoma"
                                 font.pointSize: 10
-                                validator: IntValidator{
-                                    bottom: 0;
-                                    top: 999999999;
+                                validator: IntValidator {
+                                    bottom: 0
+                                    top: 999999999
                                 }
                                 Text {
                                     text: qsTr("Sayı Giriniz")
@@ -122,12 +121,12 @@ Item {
                                 }
                             }
                         }
-                        Rectangle{
-                            width: parent.width/2
+                        Rectangle {
+                            width: parent.width / 2
                             height: 50
                             border.width: 1
                             border.color: "black"
-                            TextInput{
+                            TextInput {
                                 width: parent.width
                                 height: parent.height
                                 color: "black"
@@ -150,15 +149,14 @@ Item {
                     }
                 }
 
-
-                Rectangle{
+                Rectangle {
                     width: parent.width
                     height: 50
-                    Row{
+                    Row {
                         anchors.fill: parent
-                        Rectangle{
+                        Rectangle {
                             id: araRect
-                            width: parent.width/2
+                            width: parent.width / 2
                             height: 50
                             color: "DarkSlateGray"
                             Text {
@@ -170,7 +168,7 @@ Item {
                                 color: "white"
                                 anchors.centerIn: parent
                             }
-                            MouseArea{
+                            MouseArea {
                                 anchors.fill: parent
                                 onPressed: {
                                     araText.color = "black"
@@ -179,36 +177,36 @@ Item {
                                 onReleased: {
                                     araText.color = "white"
                                     araRect.color = "DarkSlateGray"
-                                    pageid.model = ["0"];
-                                    loadArsiv();
+                                    pageid.model = ["0"]
+                                    loadArsiv()
                                 }
                             }
                         }
-                        Rectangle{
-                            width: parent.width/4
+                        Rectangle {
+                            width: parent.width / 4
                             height: 50
                             color: "DeepPink"
-                            ComboBox{
+                            ComboBox {
                                 id: pageid
                                 anchors.fill: parent
                                 Component.onCompleted: {
-                                    model = ["0"];
+                                    model = ["0"]
                                 }
                                 onCurrentIndexChanged: {
-                                    loadArsiv();
+                                    loadArsiv()
                                 }
                             }
                         }
-                        Rectangle{
-                            width: parent.width/4
+                        Rectangle {
+                            width: parent.width / 4
                             height: 50
                             color: "DeepPink"
-                            Rectangle{
+                            Rectangle {
                                 width: parent.width
                                 height: parent.height
-                                Row{
+                                Row {
                                     anchors.fill: parent
-                                    Rectangle{
+                                    Rectangle {
                                         width: parent.width / 2
                                         height: 50
                                         color: "DarkSlateBlue"
@@ -219,18 +217,17 @@ Item {
                                             color: "white"
                                             anchors.centerIn: parent
                                         }
-                                        MouseArea{
+                                        MouseArea {
                                             anchors.fill: parent
                                             onClicked: {
-                                                if( pageid.currentIndex > 0 )
-                                                {
-                                                    pageid.currentIndex--;// This is available in all editors.
-                                                    loadArsiv();
+                                                if (pageid.currentIndex > 0) {
+                                                    pageid.currentIndex-- // This is available in all editors.
+                                                    loadArsiv()
                                                 }
                                             }
                                         }
                                     }
-                                    Rectangle{
+                                    Rectangle {
                                         width: parent.width / 2
                                         height: 50
                                         color: "DarkSlateBlue"
@@ -239,87 +236,80 @@ Item {
                                             font.bold: true
                                             font.pointSize: 14
                                             color: "white"
-                                            anchors.centerIn: parent; //itemcount
+                                            anchors.centerIn: parent //itemcount
                                         }
-                                        MouseArea{
+                                        MouseArea {
                                             anchors.fill: parent
                                             onClicked: {
-//                                                print( itemcount/limit + " - " + pageid.currentIndex );
-                                                if( pageid.currentIndex < (itemcount/limit-1) )
-                                                {
-                                                    pageid.currentIndex++;// This is available in all editors.
-                                                    loadArsiv();
+                                                //                                                print( itemcount/limit + " - " + pageid.currentIndex );
+                                                if (pageid.currentIndex < (itemcount / limit - 1)) {
+                                                    pageid.currentIndex++ // This is available in all editors.
+                                                    loadArsiv()
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-
                             }
                         }
                     }
-
-
                 }
-
-
             }
         }
 
-        Rectangle{
+        Rectangle {
             width: parent.width
             height: parent.height - searchCriteriaid.height
             anchors.top: searchCriteriaid.bottom
             color: "gray"
 
-
-            ScrollView{
+            ScrollView {
                 width: parent.width
                 height: parent.height
                 clip: true
                 Component.onCompleted: {
-                    print( "sWidth: " + width );
+                    print("sWidth: " + width)
                 }
 
                 onWidthChanged: {
                     flow.width = width
                 }
 
-                Flow{
+                Flow {
                     id: flow
                     width: parent.width
+                    property int validWidth: 250
                     onWidthChanged: {
 
-                        if( width > 200 )
-                        {
-                            repeater.itemwidth = Global.responsive(width,200);
-                        }else{
-                            repeater.width = width;
+                        if (width > validWidth) {
+                            repeater.itemwidth = Global.responsive(width,
+                                                                   validWidth)
+                        } else {
+                            repeater.width = width
                         }
-
-
-
                     }
 
-                    Repeater{
+                    Repeater {
                         id: repeater
-                        property int itemwidth: 200
+                        property int itemwidth: validWidth
 
-                        Rectangle{
+                        Rectangle {
                             width: repeater.itemwidth
-                            height: 100
+                            height: 120
                             color: "transparent"
 
-                            Rectangle{
+                            Rectangle {
                                 id: itemrect
                                 width: parent.width - 10
                                 height: parent.height - 10
-                                color: "IndianRed"
-                                Column{
+                                color: "LightSlateGray"
+                                clip: true
+
+                                Column {
                                     anchors.fill: parent
                                     Text {
-                                        text: modelData.getElement("Arşiv Adı").String
+                                        text: modelData.getElement(
+                                                  "Arşiv Adı").String
                                         width: parent.width
                                         wrapMode: Text.WordWrap
                                         horizontalAlignment: Text.AlignHCenter
@@ -328,7 +318,9 @@ Item {
                                         font.bold: true
                                     }
                                     Text {
-                                        text: modelData.getElement("Sayı").Int + " : " + modelData.getElement("Dosyalar").Array.count
+                                        text: modelData.getElement(
+                                                  "Sayı").Int + " : " + modelData.getElement(
+                                                  "Dosyalar").Array.count
                                         width: parent.width
                                         wrapMode: Text.WordWrap
                                         horizontalAlignment: Text.AlignHCenter
@@ -336,22 +328,19 @@ Item {
                                         font.pointSize: 10
                                     }
 
-
                                     Text {
-                                        text: modelData.getElement("Anahtar Kelimeler").String
+                                        text: modelData.getElement(
+                                                  "Anahtar Kelimeler").String
                                         width: parent.width
                                         wrapMode: Text.WordWrap
                                         horizontalAlignment: Text.AlignHCenter
-                                        color: "#CCCCCC"
+                                        color: "#DDDDDD"
                                         font.pointSize: 10
                                     }
-
                                 }
-
-
                             }
 
-                            DropShadow{
+                            DropShadow {
                                 anchors.fill: itemrect
                                 samples: 16
                                 radius: 8
@@ -359,139 +348,119 @@ Item {
                                 source: itemrect
                             }
 
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    print("OID: " + modelData.getElement(
+                                              "_id").Oid)
+                                    var com = Qt.createComponent(
+                                                "qrc:/ArsivGoruntule.qml")
 
+                                    if (com.status === Component.Ready) {
+                                        var e = com.createObject(item, {
+                                                                     "oid": modelData.getElement(
+                                                                                "_id").Oid
+                                                                 })
+                                    }
+                                }
+                            }
                         }
-
-
                     }
-
                 }
             }
-
-
         }
-
     }
 
-    function loadArsiv(){
+    function loadArsiv() {
 
+        var filter = QBSON.newBSON()
 
-        var filter = QBSON.newBSON();
+        filter.addString("Birim", user.getElement("Birimi").String)
 
+        if (anahtarkelimeinput.text.length > 2) {
 
-        if( anahtarkelimeinput.text.length > 2 )
-        {
+            var anahtar = QArray.newArray()
 
+            var countCN = 0
+            var cnlist = new Array
 
+            var keywords = anahtarkelimeinput.text
 
-            var anahtar = QArray.newArray();
-
-            var countCN = 0;
-            var cnlist = new Array;
-
-            var keywords = anahtarkelimeinput.text;
-
-            for( var ii = 0 ; ii < keywords.length ; ii++ )
-            {
-                if( keywords.charAt(ii) === "\"" )
-                {
-                    var n = keywords.indexOf("\"",ii+1);
-                    if( n !== -1 )
-                    {
-                        var str = keywords.slice(ii+1,n);
-                        keywords = keywords.replace(str,"");
-                        cnlist[countCN] = str;
-                        countCN++;
+            for (var ii = 0; ii < keywords.length; ii++) {
+                if (keywords.charAt(ii) === "\"") {
+                    var n = keywords.indexOf("\"", ii + 1)
+                    if (n !== -1) {
+                        var str = keywords.slice(ii + 1, n)
+                        keywords = keywords.replace(str, "")
+                        cnlist[countCN] = str
+                        countCN++
                     }
                 }
             }
 
-            var slist = keywords.split(" ");
+            var slist = keywords.split(" ")
 
-            for( ii = 0 ; ii < slist.length ; ii++ )
-            {
-//                print( ii + "* " + slist[ii]);
-                if( !slist[ii].includes("\"") )
-                {
-                    cnlist[countCN] = slist[ii];
-                    countCN++;
+            for (ii = 0; ii < slist.length; ii++) {
+                if (!slist[ii].includes("\"")) {
+                    cnlist[countCN] = slist[ii]
+                    countCN++
                 }
             }
 
-
-            for( ii = 0 ; ii < cnlist.length ; ii++ )
-            {
-                var reg = QBSON.newBSON();
-                reg.addString("$regex",cnlist[ii]);
-                reg.addString("$options","i");
-                var regx = QBSON.newBSON();
-                regx.addBson("Anahtar Kelimeler",reg);
-                anahtar.insertBson(regx);
+            for (ii = 0; ii < cnlist.length; ii++) {
+                var reg = QBSON.newBSON()
+                reg.addString("$regex", cnlist[ii])
+                reg.addString("$options", "i")
+                var regx = QBSON.newBSON()
+                regx.addBson("Anahtar Kelimeler", reg)
+                anahtar.insertBson(regx)
             }
 
-            filter.addArray("$or",anahtar);
+            filter.addArray("$or", anahtar)
         }
 
-
-
-        var sayi = parseInt(sayiinput.text);
-        if( sayi )
-        {
-            filter.addInt("Sayı",sayi);
+        var sayi = parseInt(sayiinput.text)
+        if (sayi) {
+            filter.addInt("Sayı", sayi)
         }
 
-//        print( "Sayı " + parseInt(sayiinput.text));
+        //        print( "Sayı " + parseInt(sayiinput.text));
+        var regex = QBSON.newBSON()
 
+        regex.addString("$regex", arsivadiinput.text)
+        regex.addString("$options", "i")
 
+        filter.addBson("Arşiv Adı", regex)
 
+        itemcount = db.count("Arsiv", filter)
 
+        var pagecount = itemcount / limit
 
-        var regex = QBSON.newBSON();
-
-        regex.addString("$regex",arsivadiinput.text);
-        regex.addString("$options","i");
-
-
-        filter.addBson("Arşiv Adı",regex);
-
-        itemcount = db.count("Arsiv",filter);
-
-        var pagecount = itemcount / limit;
-
-        if( pagecount > 1 )
-        {
-            var arlist = new Array;
-            for( var i = 0 ; i < pagecount ; i++ )
-            {
-                var bottom = i*limit;
-                var top = 0;
-                if( i == (pagecount - 1) )
-                {
-                    top = itemcount - bottom ;
-                }else{
-                    top = bottom + limit;
+        if (pagecount > 1) {
+            var arlist = new Array
+            for (var i = 0; i < pagecount; i++) {
+                var bottom = i * limit
+                var top = 0
+                if (i == (pagecount - 1)) {
+                    top = itemcount - bottom
+                } else {
+                    top = bottom + limit
                 }
 
-                arlist[i] = bottom + " - " + top;
+                arlist[i] = bottom + " - " + top
             }
-            pageid.model = arlist;
-        }else{
-            pageid.model = ["1 - " + itemcount];
+            pageid.model = arlist
+        } else {
+            pageid.model = ["1 - " + itemcount]
         }
 
+        var option = QBSON.newBSON()
 
-        var option = QBSON.newBSON();
+        option.addInt("limit", limit)
 
-        option.addInt("limit",limit);
+        option.addInt("skip", limit * pageid.currentIndex)
 
-        option.addInt("skip",limit * pageid.currentIndex );
-
-
-//        filter.print();
-
-        repeater.model = db.find("Arsiv",filter,option);
-
-
+        //        filter.print();
+        repeater.model = db.find("Arsiv", filter, option)
     }
-
 }
