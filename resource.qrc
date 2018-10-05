@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>icon/img.png</file>
         <file>icon/pdf.png</file>
+        <file>icon/metal.jpg</file>
+        <file>icon/tif.png</file>
+        <file>icon/doc.png</file>
+        <file>icon/xls.png</file>
     </qresource>
 </RCC>

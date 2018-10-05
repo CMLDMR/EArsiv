@@ -10,5 +10,7 @@
         <file>YeniTip.qml</file>
         <file>Arama.qml</file>
         <file>YeniArsiv.qml</file>
+        <file>ArsivGoruntule.qml</file>
+        <file>Downloading.qml</file>
     </qresource>
 </RCC>
