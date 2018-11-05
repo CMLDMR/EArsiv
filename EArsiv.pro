@@ -1,5 +1,5 @@
 QT += quick core
-CONFIG += c++11
+CONFIG += c++14
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    cpp/yeniarsivdosyamodel.cpp
+    cpp/yeniarsivdosyamodel.cpp \
+    cpp/utility.cpp
 
 RESOURCES += qml.qrc \
     resource.qrc
@@ -36,13 +37,49 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
+win32{
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDBd
-else:unix: LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
+    gcc{
+        message("* using settings for windows gcc 5.30");
+        win32:CONFIG(release, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
+        else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDBd
+        else:unix: LIBS += -L$$PWD/mingw32-windows-release-v0.7/lib/ -lQMongoDB
 
-INCLUDEPATH += $$PWD/mingw32-windows-release-v0.7/include
-DEPENDPATH += $$PWD/mingw32-windows-release-v0.7/include
+        INCLUDEPATH += $$PWD/mingw32-windows-release-v0.7/include
+        DEPENDPATH += $$PWD/mingw32-windows-release-v0.7/include
+    }
+
+    msvc{
+
+        message("* using settings for windows msvc2015x64");
+
+        win32:CONFIG(release, debug|release): LIBS += -L$$PWD/msvc-2015-x64-release-v0.7/lib/ -lQMongoDB
+        else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/msvc-2015-x64-release-v0.7/lib/ -lQMongoDBd
+        else:unix: LIBS += -L$$PWD/msvc-2015-x64-release-v0.7/lib/ -lQMongoDB
+
+        INCLUDEPATH += $$PWD/msvc-2015-x64-release-v0.7/include
+        DEPENDPATH += $$PWD/msvc-2015-x64-release-v0.7/include
+
+
+        win32: LIBS += -L$$PWD/tesseract-msvc-2015-x64/lib/ -lleptonica-1.76.0
+
+        INCLUDEPATH += $$PWD/tesseract-msvc-2015-x64/include
+        DEPENDPATH += $$PWD/tesseract-msvc-2015-x64/include
+
+        win32: LIBS += -L$$PWD/tesseract-msvc-2015-x64/lib/ -ltesseract40
+
+    }
+
+
+}
+
+
+
 
 HEADERS += \
-    cpp/yeniarsivdosyamodel.h
+    cpp/yeniarsivdosyamodel.h \
+    cpp/utility.h
+
+
+
+
