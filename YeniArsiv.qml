@@ -298,7 +298,7 @@ Item {
                                     }
 
                                     Rectangle {
-                                        width: rect.width - 150
+                                        width: rect.width - 150-75
                                         height: 75
                                         color: "LightGray"
                                         clip: true
@@ -332,6 +332,26 @@ Item {
                                             anchors.fill: parent
                                             onClicked: {
                                                 itemlist.remove(index)
+                                            }
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 75
+                                        height: 75
+                                        color: "DarkGray"
+                                        Text {
+                                            text: qsTr("OCR")
+                                            font.bold: true
+                                            font.family: "Tahoma"
+                                            font.pointSize: 10
+                                            color: "white"
+                                            anchors.centerIn: parent
+                                        }
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                console.log(Utility.runTesseract(modelData));
                                             }
                                         }
                                     }
