@@ -277,9 +277,12 @@ Item {
                             model: itemlist.model
 
                             Rectangle {
+                                id: itemRect
                                 width: rect.width
                                 height: 75
                                 color: "LightSlateGray"
+                                property string readOCR: modelData["ocr"];
+                                property bool ocrRunned: modelData["ocred"];
                                 Row {
                                     anchors.fill: parent
                                     Rectangle {
@@ -298,12 +301,12 @@ Item {
                                     }
 
                                     Rectangle {
-                                        width: rect.width - 150-75
+                                        width: rect.width - 150 - 150
                                         height: 75
                                         color: "LightGray"
                                         clip: true
                                         Text {
-                                            text: modelData
+                                            text: modelData["url"]
                                             font.bold: true
                                             font.family: "Tahoma"
                                             font.pointSize: 10
@@ -351,7 +354,53 @@ Item {
                                         MouseArea {
                                             anchors.fill: parent
                                             onClicked: {
-                                                console.log(Utility.runTesseract(modelData));
+
+                                                var com = Qt.createComponent("qrc:/OCRView.qml");
+
+                                                if( com.status === Component.Ready )
+                                                {
+                                                    var e = com.createObject(item,{"imgpath":modelData["url"]});
+
+                                                    if( e === null )
+                                                    {
+                                                        print ("OCRView Oluşturulamadı");
+                                                    }
+
+                                                    e.sakla.connect(function(ocrText){
+                                                        itemRect.readOCR = ocrText;
+                                                        itemRect.ocrRunned = true;
+                                                        itemlist.setFileOcred(index);
+                                                        e.closeView();
+                                                    });
+                                                }
+
+
+//                                                console.log(Utility.runTesseract(modelData));
+                                            }
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 75
+                                        height: 75
+                                        color: itemRect.ocrRunned ? "DarkCyan" : "Crimson"
+                                        Text {
+                                            text: itemRect.ocrRunned ? "OCR Bak" : "OCR Yok"
+                                            font.bold: true
+                                            font.family: "Tahoma"
+                                            font.pointSize: 10
+                                            color: "white"
+                                            anchors.centerIn: parent
+                                        }
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                if( itemRect.ocrRunned )
+                                                {
+
+                                                }else{
+
+                                                }
                                             }
                                         }
                                     }
