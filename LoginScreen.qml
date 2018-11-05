@@ -10,9 +10,9 @@ Item {
 
     property QMLBSON kullanici
 
-    signal loginSucces();
+    signal loginSucces
 
-    Rectangle{
+    Rectangle {
         anchors.fill: parent
         color: "#88000000"
 
@@ -26,23 +26,22 @@ Item {
             source: inputrectangle
         }
 
-
-        Rectangle{
+        Rectangle {
             id: inputrectangle
             width: parent.width > 400 ? 400 : parent.width
             height: parent.height > 200 ? 200 : parent.height
             color: "#88000000"
             anchors.centerIn: parent
 
-            Column{
+            Column {
                 anchors.fill: parent
 
-                Rectangle{
+                Rectangle {
                     color: "gray"
                     width: parent.width
                     height: 50
                     Text {
-                        text: qsTr("T.C. Serik Belediyesi E-Arşiv");
+                        text: qsTr("T.C. Serik Belediyesi E-Arşiv")
                         color: "white"
                         font.bold: false
                         font.family: "Gothic"
@@ -52,11 +51,11 @@ Item {
                     }
                 }
 
-                Rectangle{
+                Rectangle {
                     width: parent.width
                     height: 50
                     color: "DarkSlateGray"
-                    TextInput{
+                    TextInput {
                         id: telnoinput
                         width: parent.width
                         height: parent.height
@@ -67,8 +66,9 @@ Item {
                         font.pointSize: 12
                         font.family: "Tahoma"
                         color: "white"
+                        //                        text: "05325995488"
                         Text {
-                            text: qsTr("Telefon Numarasını Giriniz ( 05321234567 )");
+                            text: qsTr("Telefon Numarasını Giriniz ( 05321234567 )")
                             font.bold: true
                             font.pointSize: 12
                             color: "#88888888"
@@ -81,11 +81,11 @@ Item {
                     }
                 }
 
-                Rectangle{
+                Rectangle {
                     width: parent.width
                     height: 50
                     color: "DarkSlateGray"
-                    TextInput{
+                    TextInput {
                         id: sifreinput
                         width: parent.width
                         height: parent.height
@@ -97,8 +97,9 @@ Item {
                         font.family: "Tahoma"
                         color: "white"
                         echoMode: TextInput.PasswordEchoOnEdit
+                        //                        text: "mm"
                         Text {
-                            text: qsTr("Şifrenizi Giriniz");
+                            text: qsTr("Şifrenizi Giriniz")
                             font.bold: true
                             font.pointSize: 12
                             color: "#88888888"
@@ -111,32 +112,37 @@ Item {
                     }
                 }
 
-                Rectangle{
+                Rectangle {
                     color: "#1a0000"
                     width: parent.width
                     height: 50
                     Text {
-                        text: qsTr("Giriş");
+                        text: qsTr("Giriş")
                         color: "white"
                         font.bold: true
                         font.family: "Tahoma"
                         font.pointSize: 11
                         anchors.centerIn: parent
                     }
-                    MouseArea{
+                    MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            var filter = QBSON.newBSON();
+                            var filter = QBSON.newBSON()
 
-                            QBSON.insertString(filter,"telefon",telnoinput.text);
-                            QBSON.insertString(filter,"password",sifreinput.text);
+                            QBSON.insertString(filter, "telefon",
+                                               telnoinput.text)
+                            QBSON.insertString(filter, "password",
+                                               sifreinput.text)
 
-                            item.kullanici = db.find_one("Personel",filter,QBSON.newBSON());
+                            user = db.find_one("Personel", filter,
+                                               QBSON.newBSON())
 
-                            if( item.kullanici.getElement("telefon").String === telnoinput.text && item.kullanici.getElement("telefon").String.length )
-                            {
-                                item.kullanici.print();
-                                loginSucces();
+                            if (user.getElement(
+                                        "telefon").String === telnoinput.text
+                                    && user.getElement(
+                                        "telefon").String.length) {
+                                //                                user.print();
+                                loginSucces()
                             }
                         }
                     }
@@ -144,5 +150,4 @@ Item {
             }
         }
     }
-
 }
