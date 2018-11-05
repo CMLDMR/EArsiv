@@ -12,5 +12,6 @@
         <file>YeniArsiv.qml</file>
         <file>ArsivGoruntule.qml</file>
         <file>Downloading.qml</file>
+        <file>OCRView.qml</file>
     </qresource>
 </RCC>
