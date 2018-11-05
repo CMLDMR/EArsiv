@@ -344,12 +344,15 @@ Item {
                                         height: 75
                                         color: "DarkGray"
                                         Text {
-                                            text: qsTr("OCR")
+                                            text: qsTr("OCR Çalıştır!")
                                             font.bold: true
                                             font.family: "Tahoma"
                                             font.pointSize: 10
                                             color: "white"
                                             anchors.centerIn: parent
+                                            width: parent.width
+                                            wrapMode: Text.WordWrap
+                                            horizontalAlignment: Text.AlignHCenter
                                         }
                                         MouseArea {
                                             anchors.fill: parent
@@ -369,8 +372,8 @@ Item {
                                                     e.sakla.connect(function(ocrText){
                                                         itemRect.readOCR = ocrText;
                                                         itemRect.ocrRunned = true;
-                                                        itemlist.setFileOcred(index);
-                                                        e.closeView();
+                                                        itemlist.setFileOcred( index , itemRect.readOCR );
+                                                        e.destroy();
                                                     });
                                                 }
 
@@ -397,7 +400,12 @@ Item {
                                             onClicked: {
                                                 if( itemRect.ocrRunned )
                                                 {
+                                                    var com = Qt.createComponent("qrc:/OCRViewExtractedText.qml");
 
+                                                    if( com.status === Component.Ready )
+                                                    {
+                                                        var e = com.createObject(item,{"ocr":modelData["ocr"]});
+                                                    }
                                                 }else{
 
                                                 }
@@ -510,15 +518,18 @@ Item {
                             QBSON.insertString(file, "adi",
                                                itemlist.filename(i))
                             if (itemlist.isPDF(i)) {
-                                QBSON.insertOid(file, "iconoid",
-                                                "5bb4c097e04f292980fd28f8")
+                                QBSON.insertOid( file , "iconoid" , "5bb4c097e04f292980fd28f8" )
                             } else {
-                                QBSON.insertOid(file, "iconoid",
-                                                "5bb4c08ce04f292980fd28f6")
+                                QBSON.insertOid( file , "iconoid" , "5bb4c08ce04f292980fd28f6" )
                             }
-                            var e = db.uploadfile(itemlist.model[i],
-                                                  itemlist.filename(i))
+
+                            // burda String değil Json Object Var Onu Düzeltecez.
+                            var e = db.uploadfile( itemlist.model[i]["url"] , itemlist.filename(i) )
+
                             QBSON.insertOid(file, "oid", e.Oid)
+
+                            QBSON.insertString(file,"ocr",itemlist.fileOcr(i));
+
                             filearray.insertBson(file)
                         }
 
@@ -535,6 +546,8 @@ Item {
                         QBSON.insertArray(evrak, "Dosyalar", filearray)
 
                         QBSON.insertInt64(evrak, "julianDate", julianDate)
+
+                        evrak.print();
 
                         if (db.insert_one("Arsiv", evrak)) {
                             mesaj("Dosya Kayıt Edildi")

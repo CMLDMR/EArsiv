@@ -41,11 +41,16 @@ QString Utility::runTesseract(QString filename)
 
     QString str = api->GetUTF8Text();
 
+    while( str.count("\n") )
+    {
+        str.replace(str.indexOf("\n"),1," ");
+    }
 
     pixDestroy(&img);
 
     this->mExtractedText = str;
     emit this->extractedTextChanged();
+
     return str;
 
 }
@@ -53,4 +58,21 @@ QString Utility::runTesseract(QString filename)
 QString Utility::extractedText() const
 {
     return mExtractedText;
+}
+
+void Utility::extractTags(const QString &ocrText)
+{
+
+
+    QStringList strlist = ocrText.split(" ");
+
+    strlist.removeDuplicates();
+
+    int i = 0 ;
+    for( auto str : strlist )
+    {
+        qDebug() << i << ocrText.count(str) << str;
+    }
+
+
 }

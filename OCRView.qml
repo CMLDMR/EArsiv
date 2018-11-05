@@ -100,10 +100,7 @@ Item {
                         MouseArea{
                             anchors.fill: parent
                             onClicked: {
-
-
                                 sakla(ocrText.text);
-
                                 closeupuyari.start();
                             }
                         }

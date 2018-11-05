@@ -28,6 +28,8 @@ public:
 
     QString extractedText() const;
 
+    void extractTags( const QString &ocrText );
+
 signals:
     void extractedTextChanged();
 

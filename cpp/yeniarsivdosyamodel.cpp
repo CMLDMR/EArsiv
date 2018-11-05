@@ -75,12 +75,15 @@ void YeniArsivDosyaModel::addFile(QString fileUrl)
 
 }
 
-void YeniArsivDosyaModel::setFileOcred(const int &index)
+void YeniArsivDosyaModel::setFileOcred(const int &index , const QString & ocrText )
 {
+
+
 
     auto obj = mModel.at(index).toObject();
 
     obj.insert("ocred",true);
+    obj.insert("ocr",ocrText);
 
     mModel.replace(index,obj);
 
@@ -88,15 +91,17 @@ void YeniArsivDosyaModel::setFileOcred(const int &index)
 
 }
 
-void YeniArsivDosyaModel::setfileOcr(const int &index, QString ocrText)
+void YeniArsivDosyaModel::setFileOcr(const int &index/*, const QString &ocrText*/)
 {
+    QString ocrText;
+    qDebug() << "setfileOcr" << index << ocrText ;
     auto obj = mModel.at(index).toObject();
 
     obj.insert("ocr",ocrText);
 
-    mModel.replace(index,obj);
+//    mModel.replace(index,obj);
 
-    emit modelChanged();
+//    emit modelChanged();
 }
 
 QString YeniArsivDosyaModel::filename(const int &index)
@@ -109,6 +114,17 @@ QString YeniArsivDosyaModel::filename(const int &index)
     }else{
         return "BilinmeyenDosyaAdı";
     }
+}
+
+QString YeniArsivDosyaModel::fileOcr(const int &index)
+{
+    if( this->mModel.at(index).toObject()["ocred"].toBool() )
+    {
+        return this->mModel.at(index).toObject()["ocr"].toString();
+    }else{
+        return "No OCR Exist";
+    }
+
 }
 
 bool YeniArsivDosyaModel::isPDF(const int &index)

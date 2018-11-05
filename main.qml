@@ -4,6 +4,8 @@ import QtGraphicalEffects 1.0
 
 import com.mongodb 0.7
 
+import QtQuick.Controls 2.4
+
 Window {
 
     id: root
@@ -121,6 +123,13 @@ Window {
                 }
             }
         }
+
+
+
+
+
+
+
 
 
 
