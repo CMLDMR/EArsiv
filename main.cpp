@@ -10,9 +10,12 @@
 #include "qmlmongodb.h"
 #include "../url.h"
 #include "cpp/yeniarsivdosyamodel.h"
+#include "cpp/utility.h"
+
 
 int main(int argc, char *argv[])
 {
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -25,10 +28,13 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("db",new QMLMongoDB());
 
+    engine.rootContext()->setContextProperty("Utility",new Utility());
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())
         return -1;
 
     return app.exec();
+
 }
