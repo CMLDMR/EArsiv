@@ -23,6 +23,10 @@ public:
 
     Q_INVOKABLE void addFile(QString fileUrls);
 
+    Q_INVOKABLE void setFileOcred( const int &index );
+
+    Q_INVOKABLE void setfileOcr( const int &index , QString ocrText );
+
     Q_INVOKABLE QString filename(const int& index);
 
     Q_INVOKABLE bool isPDF(const int& index);
