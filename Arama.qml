@@ -127,6 +127,7 @@ Item {
                             border.width: 1
                             border.color: "black"
                             TextInput {
+                                id: ocrText
                                 width: parent.width
                                 height: parent.height
                                 color: "black"
@@ -136,7 +137,7 @@ Item {
                                 font.family: "Tahoma"
                                 font.pointSize: 10
                                 Text {
-                                    text: qsTr("Açıklama İçinde Kelime Giriniz")
+                                    text: qsTr("OCR İçinde Kelime Giriniz")
                                     color: "#BBBBBB"
                                     font.bold: true
                                     font.family: "Tahoma"
@@ -178,7 +179,8 @@ Item {
                                     araText.color = "white"
                                     araRect.color = "DarkSlateGray"
                                     pageid.model = ["0"]
-                                    loadArsiv()
+//                                    loadArsiv();
+                                    loadArsivV2();
                                 }
                             }
                         }
@@ -193,7 +195,7 @@ Item {
                                     model = ["0"]
                                 }
                                 onCurrentIndexChanged: {
-                                    loadArsiv()
+                                    loadArsivV2()
                                 }
                             }
                         }
@@ -222,7 +224,7 @@ Item {
                                             onClicked: {
                                                 if (pageid.currentIndex > 0) {
                                                     pageid.currentIndex-- // This is available in all editors.
-                                                    loadArsiv()
+                                                    loadArsivV2()
                                                 }
                                             }
                                         }
@@ -244,7 +246,7 @@ Item {
                                                 //                                                print( itemcount/limit + " - " + pageid.currentIndex );
                                                 if (pageid.currentIndex < (itemcount / limit - 1)) {
                                                     pageid.currentIndex++ // This is available in all editors.
-                                                    loadArsiv()
+                                                    loadArsivV2();
                                                 }
                                             }
                                         }
@@ -419,6 +421,8 @@ Item {
             filter.addArray("$or", anahtar)
         }
 
+
+
         var sayi = parseInt(sayiinput.text)
         if (sayi) {
             filter.addInt("Sayı", sayi)
@@ -460,7 +464,154 @@ Item {
 
         option.addInt("skip", limit * pageid.currentIndex)
 
-        //        filter.print();
+                filter.print();
         repeater.model = db.find("Arsiv", filter, option)
+    }
+
+
+    //belek.meclis,kadriye.encüment,serik.meclis.encümen
+    function loadArsivV2() {
+
+        var filter = QBSON.newBSON()
+
+        filter.addString("Birim", user.getElement("Birimi").String)
+
+        if (anahtarkelimeinput.text.length > 2) {
+
+            var orlist = QArray.newArray();
+
+            var slist = anahtarkelimeinput.text.split(",");
+
+
+            for( var i = 0 ; i < slist.length ; i++ )
+            {
+
+                var str = slist[i];
+
+                var strlist = str.split(".");
+
+                var tempandlist = QArray.newArray();
+
+                for( var j = 0 ; j < strlist.length ; j++ )
+                {
+//                    print (i + "." + j + strlist[j] );
+
+                    var reg = QBSON.newBSON()
+                    reg.addString("$regex", strlist[j])
+                    reg.addString("$options", "i")
+                    var regx = QBSON.newBSON()
+                    regx.addBson("Anahtar Kelimeler", reg)
+                    tempandlist.insertBson(regx)
+
+                }
+
+                var andobj = QBSON.newBSON();
+
+                andobj.addArray("$and",tempandlist);
+
+                orlist.insertBson(andobj);
+
+            }
+            filter.addArray("$or", orlist)
+        }
+
+
+
+        if( ocrText.text.length > 2 )
+        {
+
+            var orlistocr = QArray.newArray();
+
+            var slistocr = ocrText.text.split(",");
+
+
+            for( i = 0 ; i < slistocr.length ; i++ )
+            {
+
+                var strocr = slistocr[i];
+
+                var strlistocr = strocr.split(".");
+
+                var tempandlistocr = QArray.newArray();
+
+                for( j = 0 ; j < strlistocr.length ; j++ )
+                {
+                    print (i + "." + j + strlistocr[j] );
+
+                    var regocr = QBSON.newBSON()
+                    regocr.addString("$regex", strlistocr[j])
+                    regocr.addString("$options", "i")
+                    var regxocr = QBSON.newBSON()
+                    regxocr.addBson("ocr", regocr)
+                    tempandlistocr.insertBson(regxocr)
+
+                }
+
+                var andobjocr = QBSON.newBSON();
+
+                andobjocr.addArray("$and",tempandlistocr);
+
+                orlistocr.insertBson(andobjocr);
+
+            }
+
+            var filterocr = QBSON.newBSON();
+
+            filterocr.addArray("$or",orlistocr);
+
+
+            var filter2 = QBSON.newBSON();
+
+            filter2.addBson("$elemMatch",filterocr);
+
+            filter.addBson("Dosyalar", filter2)
+        }
+
+        filter.print();
+
+        var sayi = parseInt(sayiinput.text)
+
+        if (sayi) {
+            filter.addInt("Sayı", sayi)
+        }
+
+//        //        print( "Sayı " + parseInt(sayiinput.text));
+        var regex = QBSON.newBSON()
+
+        regex.addString("$regex", arsivadiinput.text)
+        regex.addString("$options", "i")
+
+        filter.addBson("Arşiv Adı", regex)
+
+        itemcount = db.count("Arsiv", filter)
+
+        var pagecount = itemcount / limit
+
+        if (pagecount > 1) {
+            var arlist = new Array
+            for (var i = 0; i < pagecount; i++) {
+                var bottom = i * limit
+                var top = 0
+                if (i == (pagecount - 1)) {
+                    top = itemcount - bottom
+                } else {
+                    top = bottom + limit
+                }
+
+                arlist[i] = bottom + " - " + top
+            }
+            pageid.model = arlist
+        } else {
+            pageid.model = ["1 - " + itemcount]
+        }
+
+        var option = QBSON.newBSON()
+
+        option.addInt("limit", limit)
+
+        option.addInt("skip", limit * pageid.currentIndex)
+
+        repeater.model = db.find("Arsiv", filter, option)
+
     }
 }
